@@ -206,6 +206,8 @@ const I18N = {
     detail_update: "به‌روزرسانی",
     detail_stopped: "توقف در این نقطه",
     loss_opt_mae: "برای MAE/Huber جواب بستهٔ خطی همان نقطهٔ صورتی (حداقل MSE) نیست؛ فقط مرجع است.",
+    manual_log: "ثبت دستی وضعیت",
+    residual_preview: "نمونه باقیمانده‌ها (چند مورد اول):",
   },
   en: {
     title: "Visualization & Optimization — Sample vs Parameter Space",
@@ -260,6 +262,64 @@ const I18N = {
     detail_update: "Update",
     detail_stopped: "Stopped here",
     loss_opt_mae: "For MAE/Huber the pink point is the MSE closed form, not the minimizer of the current loss.",
+    manual_log: "Manual log",
+    residual_preview: "Sample residual labels (first few):",
+  },
+  ar: {
+    title: "تصور التحسين — فضاء العينة وفضاء المعاملات",
+    subtitle: "انحدار خطي، مشهد دالة الكلفة، وانحدار تدرجي على سطح الكلفة",
+    intro_title: "الفكرة التعليمية",
+    intro_p1:
+      "في الانحدار الخطي y ≈ w x + b، يكون «فضاء العينة» هو مستوى (x, y)، و«فضاء المعاملات» هو مستوى (w, b). دالة الكلفة المختارة ترسم مشهدا فوق (w, b)، ويتحرك الانحدار التدرجي باتجاه −∇L.",
+    bullet_sample: "فضاء العينة: محورا x و y، النقاط، خط الملاءمة، والبواقي.",
+    bullet_param: "فضاء المعاملات: محورا w و b، خطوط الكلفة، النقطة الحالية ومسار GD.",
+    bullet_loss: "اختر دالة الكلفة من لوحة التحكم؛ الخريطة اللونية على اليمين تمثل نفس الدالة على (w, b).",
+    repro_note: "قابلية التكرار: بيانات ببذرة ثابتة، خطوات GD صريحة، وتفاصيل كل خطوة بصيغة LaTeX.",
+    controls_title: "عناصر التحكم",
+    label_loss_fn: "دالة الكلفة",
+    label_huber_delta: "عتبة Huber δ",
+    label_w: "الميل w",
+    label_b: "المقطع b",
+    loss_label_mse: "متوسط مربع الخطأ (MSE)",
+    loss_label_mae: "متوسط القيمة المطلقة للخطأ (MAE)",
+    loss_label_huber: "متوسط كلفة Huber",
+    gd_title: "الانحدار التدرجي (قابل للتكرار)",
+    gd_steps_desc: "الخطوة: (w, b) ← (w, b) − η ∇L. يمكنك الإيقاف في أي وقت وضبط التأخير بين الخطوات.",
+    label_lr: "معدل التعلم η",
+    label_steps: "عدد الخطوات",
+    label_delay: "تأخير الحركة (مللي ثانية)",
+    label_seed: "بيانات ثابتة (seed=42)",
+    btn_animate: "تشغيل حركة GD",
+    btn_stop: "إيقاف",
+    btn_reset: "إعادة ضبط الخط",
+    btn_opt: "الانتقال إلى حل أقل المربعات (MSE)",
+    btn_log_state: "تسجيل الحالة الحالية",
+    btn_clear_log: "مسح سجل التفاصيل",
+    chart_sample: "فضاء العينة (البيانات والخط)",
+    hint_sample: "أزرق: العينات؛ مرجاني: النموذج الحالي؛ متقطع: النموذج المرجعي.",
+    chart_param: "فضاء المعاملات ومشهد الكلفة",
+    hint_param: "ألوان أفتح = كلفة أقل؛ نجمة: (w,b)؛ أخضر: المسار؛ معيّن وردي: حل MSE. انقر على الخريطة.",
+    footer: "إعداد Mohammad Khalooei",
+    gd_running: "جار تشغيل الانحدار التدرجي…",
+    gd_done: "اكتملت الحركة.",
+    gd_stopped: "تم إيقاف الحركة بواسطة المستخدم.",
+    theme_dark: "ليلي",
+    theme_light: "نهاري",
+    sidebar_title: "تفاصيل الحساب",
+    sidebar_lead: "استخدم «تسجيل الحالة الحالية» أو شغّل GD لإضافة تفاصيل كل خطوة مع الصيغ الرياضية.",
+    fab_details: "تفاصيل",
+    opt_mse_only: "الحل المغلق الكلاسيكي يتعلق بـ MSE؛ لبقية الدوال تكون النقطة الوردية مرجعا هندسيا فقط.",
+    detail_step: "الخطوة",
+    detail_of: "من",
+    detail_params: "المعاملات (قبل التحديث)",
+    detail_data: "البيانات والبواقي",
+    detail_loss_val: "قيمة دالة الكلفة",
+    detail_grad: "التدرج",
+    detail_update: "التحديث",
+    detail_stopped: "تم الإيقاف عند هذه النقطة",
+    loss_opt_mae: "في MAE/Huber النقطة الوردية تمثل حل MSE المغلق، وليست بالضرورة أقل قيمة للدالة الحالية.",
+    manual_log: "تسجيل يدوي للحالة",
+    residual_preview: "عينات البواقي (أول عناصر):",
   },
 };
 
@@ -321,14 +381,16 @@ function invalidateGrid() {
 function applyI18n() {
   const dict = I18N[lang];
   document.documentElement.lang = lang;
-  document.documentElement.dir = lang === "fa" ? "rtl" : "ltr";
+  document.documentElement.dir = lang === "fa" || lang === "ar" ? "rtl" : "ltr";
   document.querySelectorAll("[data-i18n]").forEach((el) => {
     const key = el.getAttribute("data-i18n");
     if (dict[key] !== undefined) el.textContent = dict[key];
   });
   document.getElementById("lang-fa").classList.toggle("active", lang === "fa");
+  document.getElementById("lang-ar").classList.toggle("active", lang === "ar");
   document.getElementById("lang-en").classList.toggle("active", lang === "en");
   document.getElementById("lang-fa").setAttribute("aria-pressed", lang === "fa");
+  document.getElementById("lang-ar").setAttribute("aria-pressed", lang === "ar");
   document.getElementById("lang-en").setAttribute("aria-pressed", lang === "en");
   updateLossMetricLabel();
 }
@@ -433,7 +495,7 @@ function buildSamplePlot() {
       mode: "markers",
       x: xs,
       y: ys,
-      name: lang === "fa" ? "نمونه‌ها" : "Samples",
+      name: lang === "fa" ? "نمونه‌ها" : lang === "ar" ? "العينات" : "Samples",
       marker: { size: 11, color: "#38bdf8", line: { width: 1, color: "rgba(255,255,255,0.35)" } },
     },
     {
@@ -441,7 +503,7 @@ function buildSamplePlot() {
       mode: "lines",
       x: line.xx,
       y: line.yy,
-      name: lang === "fa" ? "مدل فعلی" : "Current fit",
+      name: lang === "fa" ? "مدل فعلی" : lang === "ar" ? "النموذج الحالي" : "Current fit",
       line: { color: "#fb7185", width: 3.2, shape: "linear" },
     },
     {
@@ -449,7 +511,7 @@ function buildSamplePlot() {
       mode: "lines",
       x: trueLine.xx,
       y: trueLine.yy,
-      name: lang === "fa" ? "مدل مرجع" : "Reference",
+      name: lang === "fa" ? "مدل مرجع" : lang === "ar" ? "مرجع" : "Reference",
       line: { color: "rgba(244,114,182,0.55)", width: 2, dash: "dash" },
     },
     {
@@ -457,7 +519,7 @@ function buildSamplePlot() {
       mode: "lines",
       x: residualX,
       y: residualY,
-      name: lang === "fa" ? "باقیمانده" : "Residuals",
+      name: lang === "fa" ? "باقیمانده" : lang === "ar" ? "البواقي" : "Residuals",
       line: { color: "rgba(251,191,36,0.45)", width: 1.2 },
       showlegend: true,
     },
@@ -532,7 +594,7 @@ function buildParamPlot() {
       mode: "lines",
       x: trajB,
       y: trajW,
-      name: lang === "fa" ? "مسیر GD" : "GD path",
+      name: lang === "fa" ? "مسیر GD" : lang === "ar" ? "مسار GD" : "GD path",
       line: { color: "#4ade80", width: 2.5 },
     });
   }
@@ -542,7 +604,7 @@ function buildParamPlot() {
     mode: "markers",
     x: [bCurrent],
     y: [wCurrent],
-    name: lang === "fa" ? "(w, b) فعلی" : "Current (w,b)",
+    name: lang === "fa" ? "(w, b) فعلی" : lang === "ar" ? "(w, b) الحالي" : "Current (w,b)",
     marker: {
       size: 18,
       color: "#fbbf24",
@@ -557,7 +619,7 @@ function buildParamPlot() {
     mode: "markers",
     x: [ls.b],
     y: [ls.w],
-    name: lang === "fa" ? "حداقل MSE (بسته)" : "MSE least squares",
+    name: lang === "fa" ? "حداقل MSE (بسته)" : lang === "ar" ? "حل MSE المغلق" : "MSE least squares",
     marker: { size: 10, color: "#f472b6", symbol: "diamond", line: { width: 1, color: "#fff" } },
   });
 
@@ -683,13 +745,11 @@ function buildDetailBlock(opts) {
     tag,
   } = opts;
   const st = residualStats(data.xs, data.ys, wBefore, bBefore);
-  const isFa = lang === "fa";
+  const isRtlLang = lang === "fa" || lang === "ar";
 
   const title =
     tag === "manual"
-      ? isFa
-        ? "ثبت دستی وضعیت"
-        : "Manual log"
+      ? I18N[lang].manual_log
       : `${I18N[lang].detail_step} ${stepIndex} ${I18N[lang].detail_of} ${totalSteps}`;
 
   const lossDef = latexLossDefinition();
@@ -720,7 +780,7 @@ function buildDetailBlock(opts) {
     <div class="mj-wrap">${lossDef}</div>
     <div class="mj-wrap">${gradDef}</div>
     <div class="mj-wrap">${updRule}</div>
-    <p class="small muted" style="margin-top:0.5rem">${isFa ? "نمونهٔ باقیمانده‌ها (چند جملهٔ اول):" : "Sample residual labels (first few):"} $${samplePreview}$</p>
+    <p class="small muted" style="margin-top:0.5rem">${I18N[lang].residual_preview} $${samplePreview}$</p>
     <hr class="step-sep" />
   `;
   return wrap;
@@ -833,7 +893,7 @@ async function runAnimation() {
 
     const La = lossValue(data.xs, data.ys, wCurrent, bCurrent);
     gdStatus.textContent =
-      (lang === "fa" ? `گام ` : `Step `) +
+      (lang === "fa" ? `گام ` : lang === "ar" ? `الخطوة ` : `Step `) +
       (t + 1) +
       "/" +
       steps +
@@ -896,7 +956,7 @@ btnOpt.addEventListener("click", () => {
   elB.value = String(clamp(bCurrent, parseFloat(elB.min), parseFloat(elB.max)));
   trajW = [];
   trajB = [];
-  let msg = lang === "fa" ? "پرش به حداقل MSE (بسته)." : "Jumped to closed-form MSE solution.";
+  let msg = lang === "fa" ? "پرش به حداقل MSE (بسته)." : lang === "ar" ? "تم الانتقال إلى حل MSE المغلق." : "Jumped to closed-form MSE solution.";
   if (currentLossId !== "mse") msg += " " + I18N[lang].loss_opt_mae;
   gdStatus.textContent = msg;
   render();
@@ -930,6 +990,7 @@ inputHuberDelta.addEventListener("change", () => {
 });
 
 document.getElementById("lang-fa").addEventListener("click", () => onLangChange("fa"));
+document.getElementById("lang-ar").addEventListener("click", () => onLangChange("ar"));
 document.getElementById("lang-en").addEventListener("click", () => onLangChange("en"));
 
 document.getElementById("theme-dark").addEventListener("click", () => setTheme("dark"));

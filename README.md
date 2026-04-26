@@ -1,7 +1,7 @@
 # tutorial-linear-regression-simulator-app
 
-> Bilingual README (Persian + English)  
-> [Jump to English](#english-version)
+> Trilingual README (Persian + Arabic + English)  
+> [پرش به بخش عربی](#النسخة-العربية-rtl) | [Jump to English](#english-version)
 
 [![GitHub Repo](https://img.shields.io/badge/Repository-khalooei%2Ftutorial--linear--regression--simulator--app-181717?logo=github)](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 [![Star this project](https://img.shields.io/badge/If%20you%20liked%20it-Give%20a%20Star-fbbf24)](https://github.com/khalooei/tutorial-linear-regression-simulator-app/stargazers)
@@ -97,6 +97,59 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
 **Email:** `khalooei@aut.ac.ir`
 
 ### نویسنده
+**mohammad khalooei**
+
+</div>
+
+---
+
+<div dir="rtl">
+
+## النسخة العربية (RTL)
+
+### نظرة عامة
+هذا المشروع أداة تعليمية تفاعلية لمقرر **التحسين** باستخدام مثال الانحدار الخطي، وتوضح بشكل مباشر:
+
+- الفرق بين **فضاء العينة** (`x, y`) و**فضاء المعاملات** (`w, b`)
+- تأثير تغيير المعاملات على خط الملاءمة
+- تغيّر قيمة **Loss** ومسار **Gradient Descent**
+- تفاصيل حسابية خطوة بخطوة بصيغة **LaTeX**
+
+### معاينة الفيديو
+<video src="video/overview.webm" controls muted playsinline width="100%"></video>
+
+### التشغيل السريع
+```bash
+git clone git@github.com:khalooei/tutorial-linear-regression-simulator-app.git
+cd tutorial-linear-regression-simulator-app
+python -m venv .venv
+```
+
+Windows (PowerShell):
+```powershell
+.venv\Scripts\Activate.ps1
+```
+
+Linux/macOS:
+```bash
+source .venv/bin/activate
+```
+
+```bash
+pip install -r requirements.txt
+python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
+```
+
+افتح المتصفح على:
+
+`http://127.0.0.1:8765`
+
+### التواصل والتعاون
+للاستفسارات أو التعاون الأكاديمي/التطويري:
+
+**Email:** `khalooei@aut.ac.ir`
+
+### الكاتب
 **mohammad khalooei**
 
 </div>
