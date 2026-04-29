@@ -4,7 +4,7 @@
 > [پرش به بخش عربی](#النسخة-العربية-rtl) | [Jump to English](#english-version)
 
 [![GitHub Repo](https://img.shields.io/badge/Repository-khalooei%2Ftutorial--linear--regression--simulator--app-181717?logo=github)](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
-[![Star this project](https://img.shields.io/badge/If%20you%20liked%20it-Give%20a%20Star-fbbf24)](https://github.com/khalooei/tutorial-linear-regression-simulator-app/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/khalooei/tutorial-linear-regression-simulator-app?style=social)](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 
 <div dir="rtl">
 
@@ -34,8 +34,8 @@
   - گرادیان
   - فرمول و مقدار Loss
   - قانون آپدیت پارامتر
-- رابط کاربری دو زبانه (فارسی/انگلیسی)
-- تم **شب / روز**
+- رابط کاربری سه زبانه (فارسی/العربية/English)
+- نمایش در دو تم نوری و تیره
 
 ### اجرای سریع
 1) کلون پروژه:
@@ -86,10 +86,10 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
 4. انیمیشن GD را اجرا کنید و مسیر حرکت روی سطح خطا را بررسی کنید.
 5. پنل جزئیات را باز کنید و محاسبات هر مرحله را خط به خط مرور کنید.
 
-### اگر پروژه را دوست داشتید
-از طریق لینک زیر به پروژه **Star** بدهید:
+### GitHub Stars
+برای ثبت Star (یا Like) روی دکمهٔ Star در صفحهٔ اصلی ریپوزیتوری کلیک کنید:
 
-👉 [Star on GitHub](https://github.com/khalooei/tutorial-linear-regression-simulator-app/stargazers)
+[صفحهٔ ریپو در GitHub](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 
 ### ارتباط و همکاری توسعه
 اگر سوالی داشتید یا برای توسعه و همکاری آموزشی/پژوهشی علاقه مند بودید، خوشحال می شوم در ارتباط باشیم.
@@ -228,10 +228,10 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
 
 `http://127.0.0.1:8765`
 
-### If You Like This Project
-Please support it with a GitHub star:
+### GitHub Stars
+Please use the Star button on the repository main page:
 
-👉 [Star this repository](https://github.com/khalooei/tutorial-linear-regression-simulator-app/stargazers)
+[Repository main page (Star)](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 
 ### Contact & Collaboration
 For questions, educational usage, or development collaboration:
