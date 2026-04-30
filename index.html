@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Khalooei — Visualization & Optimization</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet" />
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [["$", "$"], ["\\(", "\\)"]],
+        displayMath: [["$$", "$$"], ["\\[", "\\]"]],
+      },
+      svg: { fontCache: "global" },
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+  <link rel="stylesheet" href="./static/style.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-mark">◈</span>
+        <div class="brand-text">
+          <h1 data-i18n="title">تصویرسازی بهینه‌سازی — فضای نمونه و فضای پارامتر</h1>
+          <p class="subtitle" data-i18n="subtitle">رگرسیون خطی، منظرهٔ تابع هزینه، حرکت گرادیان</p>
+        </div>
+      </div>
+      <div class="top-actions">
+        <div class="theme-switch" role="group" aria-label="Theme">
+          <button type="button" id="theme-dark" class="theme-btn active" data-theme-pick="dark" aria-pressed="true" data-i18n="theme_dark">شب</button>
+          <button type="button" id="theme-light" class="theme-btn" data-theme-pick="light" aria-pressed="false" data-i18n="theme_light">روز</button>
+        </div>
+        <div class="lang-switch" role="group" aria-label="Language">
+          <button type="button" id="lang-fa" class="lang-btn active" aria-pressed="true">فارسی</button>
+          <button type="button" id="lang-ar" class="lang-btn" aria-pressed="false">العربية</button>
+          <button type="button" id="lang-en" class="lang-btn" aria-pressed="false">English</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-with-sidebar" id="main-with-sidebar">
+      <main class="layout">
+        <section class="panel intro-panel">
+          <h2 data-i18n="intro_title">ایدهٔ آموزشی</h2>
+          <p class="lead" data-i18n="intro_p1"></p>
+          <ul class="bullets">
+            <li data-i18n="bullet_sample"></li>
+            <li data-i18n="bullet_param"></li>
+            <li data-i18n="bullet_loss"></li>
+          </ul>
+          <p class="small muted" data-i18n="repro_note"></p>
+        </section>
+
+        <section class="panel controls-panel">
+          <h2 data-i18n="controls_title">کنترل‌ها</h2>
+          <div class="control-grid">
+            <label class="field">
+              <span data-i18n="label_loss_fn">تابع هزینه</span>
+              <select id="select-loss" class="select-input">
+                <option value="mse">MSE</option>
+                <option value="mae">MAE</option>
+                <option value="huber">Huber</option>
+              </select>
+            </label>
+            <label class="field" id="huber-delta-wrap">
+              <span data-i18n="label_huber_delta">آستانهٔ Huber δ</span>
+              <input type="number" id="input-huber-delta" value="0.6" min="0.1" max="3" step="0.05" />
+            </label>
+            <label class="field">
+              <span data-i18n="label_w">شیب w</span>
+              <input type="range" id="slider-w" min="-3" max="6" step="0.02" value="1" />
+              <output id="out-w">1.00</output>
+            </label>
+            <label class="field">
+              <span data-i18n="label_b">عرض از مبدأ b</span>
+              <input type="range" id="slider-b" min="-2" max="5" step="0.02" value="0.5" />
+              <output id="out-b">0.50</output>
+            </label>
+            <div class="metric-card">
+              <span class="metric-label" id="loss-label-display" data-i18n="loss_label_mse">میانگین مربعات خطا (MSE)</span>
+              <span class="metric-value" id="loss-value">—</span>
+            </div>
+          </div>
+
+          <h3 class="subheading" data-i18n="gd_title">گرادیان کاهشی (تکرارپذیر)</h3>
+          <p class="small" data-i18n="gd_steps_desc"></p>
+          <div class="control-grid gd-grid">
+            <label class="field">
+              <span data-i18n="label_lr">نرخ یادگیری η</span>
+              <input type="number" id="input-lr" value="0.15" min="0.01" max="0.5" step="0.01" />
+            </label>
+            <label class="field">
+              <span data-i18n="label_steps">تعداد گام</span>
+              <input type="number" id="input-steps" value="40" min="1" max="200" step="1" />
+            </label>
+            <label class="field">
+              <span data-i18n="label_delay">تأخیر انیمیشن (میلی‌ثانیه)</span>
+              <input type="number" id="input-delay" value="1200" min="200" max="5000" step="100" />
+            </label>
+            <label class="field checkbox-field">
+              <input type="checkbox" id="chk-seed" checked />
+              <span data-i18n="label_seed">دادهٔ ثابت (seed=42)</span>
+            </label>
+          </div>
+          <div class="btn-row">
+            <button type="button" id="btn-animate" class="btn primary" data-i18n="btn_animate">شروع انیمیشن GD</button>
+            <button type="button" id="btn-stop" class="btn danger" data-i18n="btn_stop" style="display: none">توقف</button>
+            <button type="button" id="btn-reset" class="btn" data-i18n="btn_reset">بازنشانی خط</button>
+            <button type="button" id="btn-jump-opt" class="btn" data-i18n="btn_opt">پرش به جواب حداقل مربعات</button>
+          </div>
+          <p id="gd-status" class="status-line muted small" aria-live="polite"></p>
+        </section>
+
+        <section class="charts">
+          <article class="chart-card">
+            <header>
+              <h2 data-i18n="chart_sample">فضای نمونه (داده و خط برازش)</h2>
+              <p class="chart-hint" data-i18n="hint_sample"></p>
+            </header>
+            <div id="plot-sample" class="plot"></div>
+          </article>
+          <article class="chart-card">
+            <header>
+              <h2 data-i18n="chart_param">فضای پارامتر و منظرهٔ تابع هزینه</h2>
+              <p class="chart-hint" data-i18n="hint_param"></p>
+            </header>
+            <div id="plot-param" class="plot"></div>
+          </article>
+        </section>
+      </main>
+
+      <aside id="sidebar" class="sidebar" aria-hidden="true" aria-labelledby="sidebar-title">
+        <div class="sidebar-inner">
+          <div class="sidebar-header">
+            <h2 id="sidebar-title" data-i18n="sidebar_title">جزئیات محاسبات</h2>
+            <button type="button" id="btn-close-sidebar" class="icon-btn" aria-label="Close">×</button>
+          </div>
+          <p class="sidebar-lead small muted" data-i18n="sidebar_lead"></p>
+          <div class="sidebar-actions">
+            <button type="button" id="btn-log-current" class="btn secondary stretch" data-i18n="btn_log_state">ثبت وضعیت فعلی</button>
+            <button type="button" id="btn-clear-log" class="btn stretch" data-i18n="btn_clear_log">پاک کردن تاریخچه</button>
+          </div>
+          <div id="details-log" class="details-log"></div>
+        </div>
+      </aside>
+    </div>
+
+    <button type="button" id="fab-details" class="fab-details" data-i18n="fab_details">جزئیات</button>
+
+    <footer class="site-footer">
+      <span data-i18n="footer">تهیه توسط Mohammad Khalooei</span>
+    </footer>
+  </div>
+
+  <div id="sidebar-backdrop" class="sidebar-backdrop" hidden></div>
+
+  <script src="./static/app.js"></script>
+</body>
+</html>
