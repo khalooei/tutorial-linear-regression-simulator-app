@@ -86,10 +86,6 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
 4. انیمیشن GD را اجرا کنید و مسیر حرکت روی سطح خطا را بررسی کنید.
 5. پنل جزئیات را باز کنید و محاسبات هر مرحله را خط به خط مرور کنید.
 
-### GitHub Stars
-برای ثبت Star (یا Like) روی دکمهٔ Star در صفحهٔ اصلی ریپوزیتوری کلیک کنید:
-
-[صفحهٔ ریپو در GitHub](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 
 ### ارتباط و همکاری توسعه
 اگر سوالی داشتید یا برای توسعه و همکاری آموزشی/پژوهشی علاقه مند بودید، خوشحال می شوم در ارتباط باشیم.
@@ -183,8 +179,6 @@ It clearly demonstrates:
   - gradients
   - loss formula and value
   - update equation
-- Bilingual interface (Persian / English)
-- Dark / Light theme
 
 ### Quick Start
 1) Clone:
@@ -227,11 +221,6 @@ python -m uvicorn main:app --reload --host 127.0.0.1 --port 8765
 6) Open:
 
 `http://127.0.0.1:8765`
-
-### GitHub Stars
-Please use the Star button on the repository main page:
-
-[Repository main page (Star)](https://github.com/khalooei/tutorial-linear-regression-simulator-app)
 
 ### Contact & Collaboration
 For questions, educational usage, or development collaboration:
