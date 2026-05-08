@@ -1,20 +1,12 @@
-<<<<<<< HEAD
 # Deploy static copy (HTML + JS + CSS) to GitHub Pages.
 # FastAPI is not supported on Pages; the UI runs fully in the browser (Plotly + MathJax CDN).
-=======
-# Builds a static copy of the app (HTML + JS + CSS) and deploys to GitHub Pages.
-# FastAPI is not supported on Pages; the UI is fully client-side (Plotly CDN).
->>>>>>> f04bd2cae51b176b39f9e843673669ee7d9be7d0
 name: Deploy GitHub Pages
 
 on:
   push:
     branches:
       - main
-<<<<<<< HEAD
       - master
-=======
->>>>>>> f04bd2cae51b176b39f9e843673669ee7d9be7d0
   workflow_dispatch:
 
 permissions:
